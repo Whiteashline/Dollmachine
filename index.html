@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doll Claw Game</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        canvas {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const images = [
+            '1747101196111.png',
+            '1747101159907.png',
+            '1747101202511.png',
+            '1747101190790.png',
+            '1747101185271.png',
+            '1747101180315.png',
+            '1747101175482.png'
+        ];
+
+        const dolls = [];
+        const dollImages = [];
+
+        function loadImages() {
+            images.forEach((src, index) => {
+                const img = new Image();
+                img.src = src;
+                img.onload = () => {
+                    dollImages[index] = img;
+                    if (index === images.length - 1) {
+                        initDolls();
+                        gameLoop();
+                    }
+                };
+            });
+        }
+
+        function initDolls() {
+            const positions = [
+                { x: 100, y: 100 },
+                { x: 200, y: 150 },
+                { x: 300, y: 200 },
+                { x: 400, y: 250 },
+                { x: 500, y: 300 },
+                { x: 600, y: 350 },
+                { x: 700, y: 400 }
+            ];
+            images.forEach((src, index) => {
+                const img = dollImages[index];
+                const pos = positions[index];
+                dolls.push({ img, x: pos.x, y: pos.y, width: img.width, height: img.height });
+            });
+        }
+
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            dolls.forEach(doll => {
+                ctx.drawImage(doll.img, doll.x, doll.y, doll.width, doll.height);
+            });
+            requestAnimationFrame(gameLoop);
+        }
+
+        loadImages();
+    </script>
+</body>
+</html>
